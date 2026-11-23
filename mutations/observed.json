@@ -1,0 +1,174 @@
+{
+  "ranAt": "2026-11-23T17:06:24.367Z",
+  "baselineBundle": "36ef9b0c732bec845a3d4cdd0ba8b5f6",
+  "restoredBundleMatches": true,
+  "killed": 15,
+  "total": 15,
+  "records": [
+    {
+      "id": "M01",
+      "what": "OR-proof challenge split not enforced: c0 + c1 = c never checked (brief F1)",
+      "file": "src/proofs/orverify.ts",
+      "owner": "npx vitest run -t \"F3: both branches simulated\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/proofs/proofs.test.ts > A. 0/1 proof soundness > curated forgery attempts for an encryption of 2 — each must fail > F3: both branches simulated (c0, c1 chosen freely)"
+    },
+    {
+      "id": "M02",
+      "what": "tally multiplies only the first component; S is kept from one ballot (brief F2)",
+      "file": "src/elgamal/exp.ts",
+      "owner": "npx vitest run -t \"101 random ballots\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/election/election.test.ts > B. Homomorphic tally > 101 random ballots: the decrypted tally equals the count of ones, counted from the plaintexts"
+    },
+    {
+      "id": "M03",
+      "what": "decryption proof skips equation (b) R^f = B·T^c (brief F3)",
+      "file": "src/proofs/cpverify.ts",
+      "owner": "npx vitest run -t \"a transcript where only equation \\\\(b\\\\) fails is rejected\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/proofs/proofs.test.ts > Decryption proof (Chaum–Pedersen) > a transcript where only equation (b) fails is rejected"
+    },
+    {
+      "id": "M04",
+      "what": "audit reveals the randomness of a different ballot (brief F4)",
+      "file": "src/election/audit.ts",
+      "owner": "npx vitest run -t \"an honest device passes every audit\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/election/election.test.ts > C. Cast-or-audit (Benaloh) > an honest device passes every audit: the revealed randomness reproduces the committed ballot"
+    },
+    {
+      "id": "M05",
+      "what": "negative-claim sentence deleted from the clash fixture (§4.1d bite, assertion 3)",
+      "file": "src/ui/clashPanel.ts",
+      "owner": "npx playwright test --project=claims --retries=0 -g \"the negative claim: every check passed and a vote is missing\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "✘  1 [claims] › e2e/claims.spec.ts:137:3 › displayed claims › the negative claim: every check passed and a vote is missing (5.9s)"
+    },
+    {
+      "id": "M06",
+      "what": "a check inside the fixture broken: \"one ballot per listed voter\" miscounts (§4.1d bite, assertion 2)",
+      "file": "src/attacks/clash.ts",
+      "owner": "npx playwright test --project=claims --retries=0 -g \"the negative claim: every check passed and a vote is missing\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "✘  1 [claims] › e2e/claims.spec.ts:137:3 › displayed claims › the negative claim: every check passed and a vote is missing (825ms)"
+    },
+    {
+      "id": "M07",
+      "what": "changing the choice no longer retires the shown ballot",
+      "file": "src/ui/castPanel.ts",
+      "owner": "npx playwright test --project=claims --retries=0 -g \"changing the choice retires the shown ballot\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "✘  1 [claims] › e2e/claims.spec.ts:77:3 › displayed claims › changing the choice retires the shown ballot, and the page says it did (5.7s)"
+    },
+    {
+      "id": "M08",
+      "what": "changing the device no longer retires the prepared ballot",
+      "file": "src/ui/auditPanel.ts",
+      "owner": "npx playwright test --project=claims --retries=0 -g \"changing the device retires the prepared ballot\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "✘  1 [claims] › e2e/claims.spec.ts:119:3 › displayed claims › changing the device retires the prepared ballot, and the page says it did (5.7s)"
+    },
+    {
+      "id": "M09",
+      "what": "strong challenge drops the ciphertext (R, S) from the hash",
+      "file": "src/proofs/challenge.ts",
+      "owner": "npx vitest run -t \"BPW §3 rerandomisation\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/proofs/proofs.test.ts > E. Weak Fiat–Shamir (Bernhard–Pereira–Warinschi 2012, §3) > BPW §3 rerandomisation: (R·g^u, S·X^u, f0 + c0·u, f1 + c1·u) passes the weak verifier and fails the strong one"
+    },
+    {
+      "id": "M10",
+      "what": "subgroup membership check reduced to a range check",
+      "file": "src/group/modp.ts",
+      "owner": "npx vitest run -t \"subgroup membership refuses\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/group/group.test.ts > Group parameters (invariant 1) > subgroup membership refuses 0, 1-off-range values and the order-2 element p − 1"
+    },
+    {
+      "id": "M11",
+      "what": "honest prover no longer refuses v ∉ {0, 1}",
+      "file": "src/proofs/orproof.ts",
+      "owner": "npx vitest run -t \"the honest prover refuses to prove v = 2\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/proofs/proofs.test.ts > A. 0/1 proof soundness > the honest prover refuses to prove v = 2 (and −1)"
+    },
+    {
+      "id": "M12",
+      "what": "duplicate ballot IDs accepted",
+      "file": "src/election/board.ts",
+      "owner": "npx vitest run -t \"a duplicate ballot ID is rejected\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/election/election.test.ts > G. Fail-closed edge cases > a duplicate ballot ID is rejected"
+    },
+    {
+      "id": "M13",
+      "what": "shipped byte source swapped for Math.random",
+      "file": "src/group/modp.ts",
+      "owner": "npx vitest run -t \"the shipped byte source for keys and nonces is crypto\\\\.getRandomValues\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "FAIL  src/rng.test.ts > Randomness (batch requirement 3) > the shipped byte source for keys and nonces is crypto.getRandomValues"
+    },
+    {
+      "id": "M14",
+      "what": "tracker hashes the ciphertext only, not the proof",
+      "file": "src/election/election.ts",
+      "owner": "npx playwright test --project=claims --retries=0 -g \"a cast ballot: the five equations re-checked here\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "✘  1 [claims] › e2e/claims.spec.ts:48:3 › displayed claims › a cast ballot: the five equations re-checked here, and the tracker is SHA-256 of the printed ballot (727ms)"
+    },
+    {
+      "id": "M15",
+      "what": "gate bite: muted text token darkened below 4.5:1",
+      "file": "src/style.css",
+      "owner": "npx playwright test --project=a11y --retries=0 -g \"dark theme$\"",
+      "ownerPassedUnmutated": true,
+      "bundleHashChanged": true,
+      "ownerFailedMutated": true,
+      "result": "KILLED",
+      "evidence": "✘  1 [a11y] › e2e/a11y.spec.ts:26:3 › no WCAG A/AA violations in dark theme (1.6s)"
+    }
+  ]
+}
