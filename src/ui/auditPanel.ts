@@ -16,7 +16,7 @@ export function renderAuditPanel(root: HTMLElement): void {
   let current: Prepared | null = null;
 
   const retire = (): void => {
-    if (!current) return;
+    if (!out.hasChildNodes()) return;
     current = null;
     castBtn.disabled = true;
     auditBtn.disabled = true;
@@ -53,7 +53,7 @@ export function renderAuditPanel(root: HTMLElement): void {
     clear(out);
     out.append(
       h('p', {}, 'The device reveals the randomness r. Your own tool re-encrypts your choice with it and compares the result with the ballot committed under the tracker.'),
-      h('ul', { class: 'check-list' }, checkRow(res.ok, res.reason, 'audit-check', 'supports cast as intended')),
+      h('ul', { class: 'check-list' }, checkRow(res.ok, res.reason, 'audit-check', res.ok ? 'this audited ballot encrypted your choice' : 'the audit detected a changed vote')),
       res.ok
         ? verdict('pass', 'This ballot encrypted your choice. It is now spoiled — a revealed ballot could be sold — so prepare a new one to cast.')
         : verdict('alarm', 'CAUGHT: the device encrypted the other answer. Report the device.'),
@@ -84,14 +84,16 @@ export function renderAuditPanel(root: HTMLElement): void {
     probOut.append(h('p', {}, 'P(caught on one ballot) = a · f = ', h('strong', { 'data-claim': 'audit-p' }, String(+(catchProbability(a, f)).toFixed(6)))));
     return { a, f };
   };
-  for (const el of [aIn, fIn]) el.addEventListener('input', () => {
+  const updateExperiment = (): void => {
     if (simShown) {
       simShown = false;
       clear(simOut);
-      simOut.append(evidenceRetired('a or f changed, so the simulation shown was for different rates. Run it again.'));
+      simOut.append(evidenceRetired('The rates or trial count changed. Run the simulation again for these settings.'));
     }
     compute();
-  });
+  };
+  for (const el of [aIn, fIn]) el.addEventListener('input', updateExperiment);
+  nSel.addEventListener('change', updateExperiment);
   simBtn.addEventListener('click', () => {
     const v = compute();
     if (!v) return;
@@ -109,7 +111,7 @@ export function renderAuditPanel(root: HTMLElement): void {
     panelIntro(
       'Audit: cast as intended',
       'The voting device does the encrypting, so it could encrypt the opposite of what you chose — and the 0/1 proof would still verify, because the cheating ballot is still a well-formed 0 or 1. Benaloh\'s answer is the challenge: the device must commit to the ballot before you say whether you will cast it or audit it. An audit reveals the randomness, so you can check the encryption yourself.',
-      'The device cannot tell which ballots will be audited. If it changes a fraction f of votes and voters audit at rate a, each ballot catches it with probability a · f — and over many voters a cheating device is caught almost surely.',
+      'The device cannot tell which ballots will be audited. If it changes a fraction f of votes and voters audit at rate a, the chance of detection per ballot is a · f under independent auditing. Across N independent rounds the chance of at least one detection is 1 − (1 − a · f)^N. If nobody audits, a changed vote cannot be detected this way.',
     ),
     h(
       'div',

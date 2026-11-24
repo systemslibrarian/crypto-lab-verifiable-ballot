@@ -69,6 +69,12 @@ export function renderBoardPanel(root: HTMLElement): void {
     for (const b of [lookup, dup, tally, badTally]) b.disabled = false;
   });
 
+  voterSel.addEventListener('change', () => {
+    if (!board || !lookupOut.hasChildNodes()) return;
+    clear(lookupOut);
+    boardOut.replaceChildren(h('h3', {}, 'The bulletin board'), boardTable(board));
+  });
+
   lookup.addEventListener('click', () => {
     if (!board) return;
     const i = Number(voterSel.value);
@@ -101,7 +107,7 @@ export function renderBoardPanel(root: HTMLElement): void {
         { class: 'check-list' },
         checkRow(true, `Every ballot's 0/1 proof verified when it entered the board (${board.entries.length} ballots)`, 'tally-proofs', 'supports tallied as recorded'),
         checkRow(true, 'The product of the ballots on the board was recomputed here', 'tally-product', 'supports tallied as recorded'),
-        checkRow(dv.ok, dv.ok ? 'The decryption proof verifies: T = R^x for the election key' : `The decryption proof fails: ${dv.failures.join('; ')}`, 'tally-decrypt', 'supports tallied as recorded'),
+        checkRow(dv.ok, dv.ok ? 'The decryption proof verifies: T = R^x for the election key' : `The decryption proof fails: ${dv.failures.join('; ')}`, 'tally-decrypt', dv.ok ? 'supports tallied as recorded' : 'the decryption evidence failed'),
       ),
       res.ok
         ? h('div', {}, verdict('pass', `Tally: ${res.total} yes of ${board.entries.length} ballots.`), h('p', {}, 'Yes votes: ', h('strong', { 'data-claim': 'tally-total' }, String(res.total))))

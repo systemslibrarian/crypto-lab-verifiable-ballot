@@ -110,10 +110,14 @@ test.describe('displayed claims', () => {
     await page.locator('#audit-prepare').click();
     await page.locator('#audit-audit').click();
     await expect(page.locator('#audit-out .verdict-alarm')).toContainText('CAUGHT');
+    await expect(page.locator('[data-check="audit-check"] .check-prop')).toHaveText(/audit detected a changed vote/);
     await page.locator('#audit-flip').selectOption('0');
     await page.locator('#audit-prepare').click();
     await page.locator('#audit-audit').click();
     await expect(page.locator('[data-check="audit-check"]')).toHaveAttribute('data-ok', 'true');
+    await expect(page.locator('[data-check="audit-check"] .check-prop')).toHaveText(/this audited ballot encrypted your choice/);
+    await page.locator('#audit-flip').selectOption('1');
+    await expect(page.locator('[data-check="audit-check"]')).toHaveCount(0);
   });
 
   test('changing the device retires the prepared ballot, and the page says it did', async ({ page }) => {
@@ -132,6 +136,10 @@ test.describe('displayed claims', () => {
     await page.locator('#audit-a').fill('0.2');
     await page.locator('#audit-f').fill('0.35');
     await expect(page.locator('[data-claim="audit-p"]')).toHaveText(String(+(0.2 * 0.35).toFixed(6)));
+    await page.locator('#audit-sim').click();
+    await page.locator('#audit-n').selectOption('1000');
+    await expect(page.locator('[data-claim="audit-sim-n"]')).toHaveCount(0);
+    await expect(page.locator('#audit-sim-out .evidence-retired')).toBeVisible();
   });
 
   test('the negative claim: every check passed and a vote is missing', async ({ page }) => {
